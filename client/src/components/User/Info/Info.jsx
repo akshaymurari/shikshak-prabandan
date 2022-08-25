@@ -1,8 +1,11 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import constants from "../../../constant.js";
 
 function Info(props) {
     const [loading, setLoading] = useState(true);
     const [teacher, setteacher] = useState({});
+    const [editTeacher, setEditTeacher] = useState({});
     useEffect(async () => {
         if (props !== undefined && props.teacherDetails !== undefined) {
             const details = props.teacherDetails;
@@ -28,33 +31,8 @@ function Info(props) {
                 rank: "1819",
                 caste: "General",
                 Nationality: "Indian",
-                MaritalStatus: "Married",
-                Education: [
-                    {
-                        course_title: "M.Ed",
-                        college_name: "Nagarjuna University",
-                        yod: 2019,
-                        course: "Master of Education - Mathematics",
-                    },
-                    {
-                        course_title: "B.Ed",
-                        college_name: "Osmania University",
-                        yod: 2017,
-                        course: "Bachelor of Education - Mathematics",
-                    },
-                    {
-                        course_title: "Intermediate",
-                        college_name: "Narayana Junior College",
-                        yod: 2014,
-                        course: "Intermediate - M.P.C",
-                    },
-                    {
-                        course_title: "SSC",
-                        college_name: "Narayana High School",
-                        yod: 2012,
-                        course: "SSC",
-                    },
-                ],
+                MaritalStatus: details.martialStatus,
+                Education: [],
                 Timeline: [
                     {
                         "MM-YY": "August,2020",
@@ -115,9 +93,15 @@ function Info(props) {
                     ],
                 }));
             });
+            setEditTeacher(teacher);
+            console.log(teacher);
             setLoading(false);
             return;
         }
+    }, [props]);
+    useEffect(() => {
+        setEditTeacher(props.teacherDetails);
+        // console.log(editTeacher);
     }, [props]);
     return (
         <div className="main-container">
@@ -610,6 +594,22 @@ function Info(props) {
                                                                         <input
                                                                             className="form-control form-control-lg"
                                                                             type="text"
+                                                                            value={
+                                                                                editTeacher.teacherSurname
+                                                                            }
+                                                                            onChange={(
+                                                                                e
+                                                                            ) => {
+                                                                                setEditTeacher(
+                                                                                    {
+                                                                                        ...editTeacher,
+                                                                                        teacherSurname:
+                                                                                            e
+                                                                                                .target
+                                                                                                .value,
+                                                                                    }
+                                                                                );
+                                                                            }}
                                                                         />
                                                                     </div>
                                                                     <div className="form-group">
@@ -624,6 +624,21 @@ function Info(props) {
                                                                                     id="customRadio4"
                                                                                     name="customRadio"
                                                                                     className="custom-control-input"
+                                                                                    checked={
+                                                                                        editTeacher.martialStatus ===
+                                                                                        "Married"
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) => {
+                                                                                        setEditTeacher(
+                                                                                            {
+                                                                                                ...editTeacher,
+                                                                                                martialStatus:
+                                                                                                    "Married",
+                                                                                            }
+                                                                                        );
+                                                                                    }}
                                                                                 />
                                                                                 <label
                                                                                     className="custom-control-label weight-400"
@@ -638,6 +653,21 @@ function Info(props) {
                                                                                     id="customRadio5"
                                                                                     name="customRadio"
                                                                                     className="custom-control-input"
+                                                                                    checked={
+                                                                                        editTeacher.martialStatus ===
+                                                                                        "Unmarried"
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) => {
+                                                                                        setEditTeacher(
+                                                                                            {
+                                                                                                ...editTeacher,
+                                                                                                martialStatus:
+                                                                                                    "Unmarried",
+                                                                                            }
+                                                                                        );
+                                                                                    }}
                                                                                 />
                                                                                 <label
                                                                                     className="custom-control-label weight-400"
@@ -655,6 +685,21 @@ function Info(props) {
                                                                         <input
                                                                             className="form-control form-control-lg"
                                                                             type="email"
+                                                                            value={
+                                                                                editTeacher.email
+                                                                            }
+                                                                            onChange={(
+                                                                                e
+                                                                            ) => {
+                                                                                setEditTeacher(
+                                                                                    {
+                                                                                        ...editTeacher,
+                                                                                        email: e
+                                                                                            .target
+                                                                                            .value,
+                                                                                    }
+                                                                                );
+                                                                            }}
                                                                         />
                                                                     </div>
                                                                     <div className="form-group">
@@ -665,6 +710,22 @@ function Info(props) {
                                                                         <input
                                                                             className="form-control form-control-lg"
                                                                             type="text"
+                                                                            value={
+                                                                                editTeacher.phoneNumber
+                                                                            }
+                                                                            onChange={(
+                                                                                e
+                                                                            ) => {
+                                                                                setEditTeacher(
+                                                                                    {
+                                                                                        ...editTeacher,
+                                                                                        phoneNumber:
+                                                                                            e
+                                                                                                .target
+                                                                                                .value,
+                                                                                    }
+                                                                                );
+                                                                            }}
                                                                         />
                                                                     </div>
                                                                     <div className="form-group">
@@ -674,8 +735,21 @@ function Info(props) {
                                                                         <textarea
                                                                             className="form-control"
                                                                             defaultValue={
-                                                                                ""
+                                                                                editTeacher.address
                                                                             }
+                                                                            onChange={(
+                                                                                e
+                                                                            ) => {
+                                                                                setEditTeacher(
+                                                                                    {
+                                                                                        ...editTeacher,
+                                                                                        address:
+                                                                                            e
+                                                                                                .target
+                                                                                                .value,
+                                                                                    }
+                                                                                );
+                                                                            }}
                                                                         />
                                                                     </div>
                                                                     <div className="form-group mb-0">
@@ -683,6 +757,46 @@ function Info(props) {
                                                                             type="submit"
                                                                             className="btn btn-primary"
                                                                             defaultValue="Update Information"
+                                                                            onClick={async (
+                                                                                e
+                                                                            ) => {
+                                                                                e.preventDefault();
+                                                                                const result =
+                                                                                    await axios(
+                                                                                        {
+                                                                                            method: "POST",
+                                                                                            url: `${constants.backendUrl}/editDetails`,
+                                                                                            data: {
+                                                                                                email: editTeacher.email,
+                                                                                                phoneNumber:
+                                                                                                    editTeacher.phoneNumber,
+                                                                                                address:
+                                                                                                    editTeacher.address,
+                                                                                                martialStatus:
+                                                                                                    editTeacher.martialStatus,
+                                                                                                teacherSurname:
+                                                                                                    editTeacher.teacherSurname,
+                                                                                                token: localStorage.getItem(
+                                                                                                    "token"
+                                                                                                ),
+                                                                                            },
+                                                                                        }
+                                                                                    );
+                                                                                if (
+                                                                                    result
+                                                                                        .data
+                                                                                        .success
+                                                                                ) {
+                                                                                    alert(
+                                                                                        "Details updated successfully"
+                                                                                    );
+                                                                                    window.location.reload();
+                                                                                } else {
+                                                                                    alert(
+                                                                                        "Something went wrong"
+                                                                                    );
+                                                                                }
+                                                                            }}
                                                                         />
                                                                     </div>
                                                                 </li>
